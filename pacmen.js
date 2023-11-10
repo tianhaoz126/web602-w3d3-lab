@@ -20,6 +20,8 @@ function setToRandom(scale) {
 function makePac() {
   let velocity = setToRandom(10); // Gives a random velocity
   let position = setToRandom(200); // Gives a random position within 200 pixels
+
+  // Add image to div id = game
   let game = document.getElementById('game');
   let newimg = document.createElement('img');
   newimg.style.position = 'absolute';
@@ -34,7 +36,7 @@ function makePac() {
   // Add new Child image to game
   game.appendChild(newimg);
 
-  // Return details in an object
+  // return details in an object
   return {
     position,
     velocity,
@@ -43,6 +45,7 @@ function makePac() {
 }
 
 function update() {
+  // loop over pacmen array and move each one and move image in DOM
   pacMen.forEach((item) => {
     checkCollisions(item);
     item.position.x += item.velocity.x;
@@ -55,20 +58,21 @@ function update() {
 }
 
 function checkCollisions(item) {
-  // Detect collision with all walls and make pacman bounce
-  if (item.position.x + item.velocity.x < 0 || item.position.x + item.velocity.x + item.newimg.width > game.offsetWidth) {
+  // detect collision with all walls and make pacman bounce
+  let rect = game.getBoundingClientRect();
+  if (item.position.x + item.velocity.x < 0 || item.position.x + item.velocity.x + item.newimg.width > rect.width) {
     item.velocity.x = -item.velocity.x; // Reverse direction on x-axis
   }
-  if (item.position.y + item.velocity.y < 0 || item.position.y + item.velocity.y + item.newimg.height > game.offsetHeight) {
+  if (item.position.y + item.velocity.y < 0 || item.position.y + item.velocity.y + item.newimg.height > rect.height) {
     item.velocity.y = -item.velocity.y; // Reverse direction on y-axis
   }
 }
 
 function makeOne() {
-  pacMen.push(makePac()); // Add a new PacMan
+  pacMen.push(makePac()); // add a new PacMan
 }
 
-// Don't change this line
+// don't change this line
 if (typeof module !== 'undefined') {
   module.exports = { checkCollisions, update, pacMen };
 }
